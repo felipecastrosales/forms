@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FormsPage extends StatefulWidget {
-  const FormsPage({Key? key}) : super(key: key);
+  const FormsPage({super.key});
 
   @override
   State<FormsPage> createState() => _FormsPageState();
@@ -9,12 +9,15 @@ class FormsPage extends StatefulWidget {
 
 class _FormsPageState extends State<FormsPage> {
   final formKey = GlobalKey<FormState>();
-  final controller = TextEditingController();
+  final nameController = TextEditingController();
+  final passwordController = TextEditingController();
+
   String category = 'Category1';
 
   @override
   void dispose() {
-    controller.dispose();
+    nameController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -32,7 +35,7 @@ class _FormsPageState extends State<FormsPage> {
             child: Column(
               children: [
                 TextFormField(
-                  controller: controller,
+                  controller: nameController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   maxLines: null,
                   decoration: InputDecoration(
@@ -63,11 +66,12 @@ class _FormsPageState extends State<FormsPage> {
                     if (value == null || value.isEmpty) {
                       return 'Unfilled field';
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: controller,
+                  controller: passwordController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   decoration: InputDecoration(
                     labelText: 'Password',
@@ -98,6 +102,7 @@ class _FormsPageState extends State<FormsPage> {
                     if (value == null || value.isEmpty) {
                       return 'Unfilled field';
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(height: 16),
@@ -129,6 +134,7 @@ class _FormsPageState extends State<FormsPage> {
                     if (value == null || value.isEmpty) {
                       return 'Unfilled Category';
                     }
+                    return null;
                   },
                   onChanged: (String? newValue) {
                     if (newValue != null) {
@@ -152,13 +158,14 @@ class _FormsPageState extends State<FormsPage> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
                 ElevatedButton(
                   child: const Text('Save'),
                   onPressed: () {
                     var formValid = formKey.currentState?.validate() ?? false;
                     var message = 'Form isn\'t valid';
                     if (formValid) {
-                      message = 'Form is valid: ${controller.text}';
+                      message = 'Form is valid';
                     }
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
